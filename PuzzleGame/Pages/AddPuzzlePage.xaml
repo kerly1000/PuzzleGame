@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PuzzleGame.Pages.AddPuzzlePage"
+    Title="Add Puzzle">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30"
+            Spacing="20">
+
+            <Label
+                Text="Add new puzzle"
+                FontSize="30"
+                HorizontalOptions="Center" />
+
+            <Entry
+                x:Name="PuzzleNameEntry"
+                Placeholder="Enter puzzle name" />
+
+            <Button
+                Text="Choose picture"
+                Clicked="ChoosePicture_Clicked" />
+
+            <Image
+                x:Name="PreviewImage"
+                HeightRequest="220"
+                Aspect="AspectFit" />
+
+            <Button
+                Text="Save puzzle"
+                Clicked="SavePuzzle_Clicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

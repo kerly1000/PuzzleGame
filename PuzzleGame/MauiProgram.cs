@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using PuzzleGame.Data;
+using PuzzleGame.Pages;
+using PuzzleGame.Services;
+
 
 namespace PuzzleGame
 {
@@ -21,6 +24,9 @@ namespace PuzzleGame
 #endif
             builder.Services.AddSingleton<PuzzleDatabase>();
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<PuzzleService>();
+            //AddTransient lubab rakenduse avamisel lisada uue lehe pildi lisamiseks
+            builder.Services.AddTransient<AddPuzzlePage>();
 
             return builder.Build();
         }

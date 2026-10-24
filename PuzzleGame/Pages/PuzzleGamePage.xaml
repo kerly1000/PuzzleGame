@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PuzzleGame.Pages.PuzzleGamePage"
+    Title="Puzzle Game">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="15">
+
+            <Label
+                x:Name="GameTitleLabel"
+                Text="Your Puzzle"
+                FontSize="26"
+                FontAttributes="Bold"
+                HorizontalOptions="Center" />
+
+            <Image
+                x:Name="ReferenceImage"
+                HeightRequest="150"
+                Aspect="AspectFit" />
+
+            <Label
+                x:Name="DifficultyLabel"
+                FontSize="16"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Drag one tile onto another to swap them."
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center" />
+
+            <Label
+                x:Name="TimerLabel"
+                Text="Time: 120"
+                FontSize="20"
+                FontAttributes="Bold"
+                HorizontalOptions="Center" />
+
+            <Label
+                x:Name="MovesLabel"
+                Text="Moves: 0"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Border
+                Stroke="Gray"
+                StrokeThickness="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+
+                <Grid
+                    x:Name="BoardGrid"
+                    RowSpacing="0"
+                    ColumnSpacing="0" />
+
+            </Border>
+
+            <Button
+                Text="Back to puzzles"
+                Clicked="Back_Clicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

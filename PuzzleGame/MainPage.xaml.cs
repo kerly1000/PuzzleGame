@@ -1,43 +1,45 @@
-﻿using PuzzleGame;
-using PuzzleGame.Data;
+﻿
 using PuzzleGame.Models;
+using PuzzleGame.Services;
+using PuzzleGame.Pages;
 
-private readonly PuzzleDatabase _database;
+namespace PuzzleGame;
 
-public MainPage(PuzzleDatabase database)
+public partial class MainPage : ContentPage
 {
-    
+    private readonly PuzzleService _puzzleService;
 
-    _database = database;
-    TestDatabaseAsync();
-}
-
-private async void TestDatabaseAsync()
-{
-    try
+    public MainPage(PuzzleService puzzleService)
     {
-        await _database.InitAsync();
-
-        var puzzle = new Puzzle
-        {
-            Name = "Forest",
-            ImagePath = "forest.jpg",
-            CreatedAt = DateTime.Now
-        };
-
-        await _database.SavePuzzleAsync(puzzle);
-
-        var puzzles = await _database.GetPuzzlesAsync();
-
-        foreach (var item in puzzles)
-        {
-            System.Diagnostics.Debug.WriteLine(
-                $"ID: {item.Id}, Name: {item.Name}, Image: {item.ImagePath}");
-        }
+        InitializeComponent();
+        _puzzleService = puzzleService;
     }
-    catch (Exception ex)
+
+    protected override async void OnAppearing()
     {
-        System.Diagnostics.Debug.WriteLine(
-            $"Database error: {ex.Message}");
+        base.OnAppearing();
+        await LoadPuzzlesAsync();
+    }
+
+    private async Task LoadPuzzlesAsync()
+    {
+        var puzzles = await _puzzleService.GetPuzzlesAsync();
+        PuzzleList.ItemsSource = puzzles;
+    }
+
+    private async void AddPuzzle_Clicked(object sender, EventArgs e)
+    {
+        var page = new AddPuzzlePage(_puzzleService);
+        await Navigation.PushAsync(page);
+    }
+
+    private async void Puzzle_Selected(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is not Puzzle selectedPuzzle)
+            return;
+
+        ((CollectionView)sender).SelectedItem = null;
+
+        await Navigation.PushAsync(new PuzzleSetupPage(selectedPuzzle));
     }
 }
