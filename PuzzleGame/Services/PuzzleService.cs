@@ -23,8 +23,10 @@ public class PuzzleService
         await _database.SavePuzzleAsync(puzzle);
     }
 
-    public async Task DeletePuzzleAsync(Puzzle puzzle)
+    public async Task<int> DeletePuzzleAsync(Puzzle puzzle)
     {
-        await _database.DeletePuzzleAsync(puzzle);
+        return await _database.DeletePuzzleAsync(puzzle);
     }
+
+   
 }

@@ -21,11 +21,20 @@ public partial class MainPage : ContentPage
         await LoadPuzzlesAsync();
     }
 
+
     private async Task LoadPuzzlesAsync()
     {
         var puzzles = await _puzzleService.GetPuzzlesAsync();
+
+        foreach (var puzzle in puzzles)
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"Loaded puzzle: {puzzle.Name}, ID: {puzzle.Id}");
+        }
+
         PuzzleList.ItemsSource = puzzles;
     }
+
 
     private async void AddPuzzle_Clicked(object sender, EventArgs e)
     {
@@ -49,6 +58,7 @@ public partial class MainPage : ContentPage
     }
 
 
+
     private async void DeletePuzzle_Clicked(object sender, EventArgs e)
     {
         if (sender is not Button button ||
@@ -66,24 +76,45 @@ public partial class MainPage : ContentPage
         if (!confirm)
             return;
 
-        await _puzzleService.DeletePuzzleAsync(puzzle);
-
-        string tilesFolder = Path.Combine(
-            FileSystem.AppDataDirectory,
-            "PuzzleTiles",
-            $"Puzzle_{puzzle.Id}");
-
-        if (Directory.Exists(tilesFolder))
+        try
         {
-            Directory.Delete(tilesFolder, true);
-        }
+            // Kustutame pusle andmebaasist.
+            await _puzzleService.DeletePuzzleAsync(puzzle);
 
-        if (File.Exists(puzzle.ImagePath))
+
+            // Kustutame rakenduse loodud pusletükid.
+            string tilesFolder = Path.Combine(
+                FileSystem.AppDataDirectory,
+                "PuzzleTiles",
+                $"Puzzle_{puzzle.Id}");
+
+            if (Directory.Exists(tilesFolder))
+            {
+                Directory.Delete(tilesFolder, true);
+            }
+
+            // Kustutame rakenduse koopia, mitte telefoni algset fotot.
+            if (File.Exists(puzzle.ImagePath))
+            {
+                File.Delete(puzzle.ImagePath);
+            }
+
+            // Värskendame nimekirja.
+            await LoadPuzzlesAsync();
+
+            await DisplayAlert(
+                "Success",
+                "Puzzle deleted successfully.",
+                "OK");
+        }
+        catch (Exception ex)
         {
-            File.Delete(puzzle.ImagePath);
+            await DisplayAlert(
+                "Delete error",
+                ex.Message,
+                "OK");
         }
-
-        await LoadPuzzlesAsync();
     }
+
 
 }
