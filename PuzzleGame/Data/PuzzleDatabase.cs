@@ -37,6 +37,15 @@ public class PuzzleDatabase
         return await _database.InsertAsync(puzzle);
     }
 
+
+    public async Task<int> DeletePuzzleAsync(Puzzle puzzle)
+    {
+        await InitAsync();
+
+        return await _database.DeleteAsync(puzzle);
+    }
+
+
     //mängu tulemuste salvestamine ja lugemine andmebaasist
     public async Task<int> SaveGameResultAsync(GameResult result)
     {

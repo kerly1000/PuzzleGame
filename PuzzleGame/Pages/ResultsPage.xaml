@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PuzzleGame.Pages.ResultsPage"
+    Title="Game Results">
+
+    <Grid Padding="20" RowDefinitions="Auto,*" RowSpacing="15">
+
+        <Label
+            Grid.Row="0"
+            Text="Game Results"
+            FontSize="28"
+            FontAttributes="Bold"
+            HorizontalOptions="Center" />
+
+        <CollectionView
+            x:Name="ResultsList"
+            Grid.Row="1">
+
+            <CollectionView.EmptyView>
+                <Label
+                    Text="No game results yet."
+                    FontSize="18"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Padding="15"
+                        Margin="0,5"
+                        Stroke="#E0E0E0"
+                        StrokeThickness="1"
+                        BackgroundColor="#FFFFFF"
+                        StrokeShape="RoundRectangle 14">
+
+                        <VerticalStackLayout Spacing="6">
+
+                            <Label
+                                Text="{Binding PuzzleName}"
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                TextColor="#263238" />
+
+                            <Label
+                                Text="{Binding Difficulty, StringFormat='Difficulty: {0}'}" />
+
+                            <Label
+                                Text="{Binding Score, StringFormat='Moves: {0}'}" />
+
+                            <Label
+                                Text="{Binding TimeUsed, StringFormat='Time used: {0} seconds'}" />
+
+                            <Label
+                                Text="{Binding Status}"
+                                TextColor="{Binding StatusColor}"
+                                FontAttributes="Bold"
+                                FontSize="14" />
+
+                            <Label
+                                Text="{Binding PlayedAt, StringFormat='Played: {0:dd.MM.yyyy HH:mm}'}"
+                                FontSize="12"
+                                TextColor="Gray" />
+
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

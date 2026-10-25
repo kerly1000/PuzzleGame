@@ -1,6 +1,7 @@
 
 using PuzzleGame.Models;
 using PuzzleGame.Services;
+using PuzzleGame.Data;
 
 namespace PuzzleGame.Pages;
 
@@ -9,6 +10,7 @@ public partial class PuzzleGamePage : ContentPage
     private readonly Puzzle _puzzle;
     private readonly string _difficulty;
     private readonly PuzzleImageService _imageService = new();
+    private readonly PuzzleDatabase _database = new();
 
     private int _gridSize;
     private int _moves;
@@ -159,6 +161,8 @@ public partial class PuzzleGamePage : ContentPage
             _gameOver = true;
             _timer?.Stop();
 
+            await SaveGameResultAsync(false);
+
             await DisplayAlert(
                 "Time's up!",
                 $"You ran out of time.\nMoves: {_moves}",
@@ -231,12 +235,30 @@ public partial class PuzzleGamePage : ContentPage
             _gameOver = true;
             _timer?.Stop();
 
+            await SaveGameResultAsync(true);
+
             await DisplayAlert(
                 "Congratulations!",
                 $"You solved the puzzle in {_moves} moves!",
                 "OK");
         }
     }
+
+    private async Task SaveGameResultAsync(bool completed)
+    {
+        var result = new GameResult
+        {
+            PuzzleId = _puzzle.Id,
+            Difficulty = _difficulty,
+            Score = _moves,
+            TimeUsed = 90 - _timeLeft,
+            Completed = completed,
+            PlayedAt = DateTime.Now
+        };
+
+        await _database.SaveGameResultAsync(result);
+    }
+
 
     private bool IsSolved()
     {

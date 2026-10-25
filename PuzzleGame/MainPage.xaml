@@ -6,7 +6,7 @@
     x:Class="PuzzleGame.MainPage"
     Title="Puzzle Game">
 
-    <Grid Padding="20" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="15">
+    <Grid Padding="20" RowDefinitions="Auto,Auto,*,Auto, Auto" RowSpacing="15">
 
         <Label
             Grid.Row="0"
@@ -64,10 +64,11 @@
                                 WidthRequest="100"
                                 Aspect="AspectFill" />
 
+
                             <VerticalStackLayout
                                 Grid.Column="1"
                                 VerticalOptions="Center"
-                                Spacing="8">
+                                Spacing="8">            
 
                                 <Label
                                     Text="{Binding Name}"
@@ -76,14 +77,29 @@
 
                                 <Label
                                     Text="{Binding CreatedAt, StringFormat='Added: {0:dd.MM.yyyy}'}"
-                                    FontSize="13" />
-
-                                <Label
-                                    Text="Tap to play"
                                     FontSize="13"
                                     TextColor="Gray" />
 
+                                <Label
+                                    Text="▶ Play puzzle"
+                                    FontSize="16"
+                                    FontAttributes="Bold"
+                                    TextColor="#2563EB" />
+
+                                <Button
+                                    Text="Delete puzzle"
+                                    Clicked="DeletePuzzle_Clicked"
+                                    FontSize="12"
+                                    Padding="8,4"
+                                    HeightRequest="32"
+                                    HorizontalOptions="Start"
+                                    BackgroundColor="Transparent"
+                                    TextColor="Gray"
+                                    BorderColor="Transparent"
+                                    BorderWidth="0" />
+
                             </VerticalStackLayout>
+
 
                         </Grid>
                     </Border>
@@ -96,6 +112,11 @@
             Grid.Row="3"
             Text="+ Add Puzzle"
             Clicked="AddPuzzle_Clicked" />
+
+        <Button
+            Text="View Results"
+            Grid.Row="4"
+            Clicked="ViewResults_Clicked" />
 
     </Grid>
 

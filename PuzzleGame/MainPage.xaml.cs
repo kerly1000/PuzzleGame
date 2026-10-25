@@ -8,16 +8,23 @@ namespace PuzzleGame;
 public partial class MainPage : ContentPage
 {
     private readonly PuzzleService _puzzleService;
+    private readonly DefaultPuzzleService _defaultPuzzleService;
 
-    public MainPage(PuzzleService puzzleService)
+    public MainPage(
+    PuzzleService puzzleService,
+    DefaultPuzzleService defaultPuzzleService)
     {
         InitializeComponent();
+
         _puzzleService = puzzleService;
+        _defaultPuzzleService = defaultPuzzleService;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        await _defaultPuzzleService.AddDefaultPuzzlesAsync();
         await LoadPuzzlesAsync();
     }
 
@@ -33,6 +40,11 @@ public partial class MainPage : ContentPage
         await Navigation.PushAsync(page);
     }
 
+    private async void ViewResults_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ResultsPage());
+    }
+
     private async void Puzzle_Selected(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.FirstOrDefault() is not Puzzle selectedPuzzle)
@@ -42,4 +54,43 @@ public partial class MainPage : ContentPage
 
         await Navigation.PushAsync(new PuzzleSetupPage(selectedPuzzle));
     }
+
+
+    private async void DeletePuzzle_Clicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button ||
+            button.BindingContext is not Puzzle puzzle)
+        {
+            return;
+        }
+
+        bool confirm = await DisplayAlert(
+            "Delete puzzle",
+            $"Are you sure you want to delete '{puzzle.Name}'?",
+            "Delete",
+            "Cancel");
+
+        if (!confirm)
+            return;
+
+        await _puzzleService.DeletePuzzleAsync(puzzle);
+
+        string tilesFolder = Path.Combine(
+            FileSystem.AppDataDirectory,
+            "PuzzleTiles",
+            $"Puzzle_{puzzle.Id}");
+
+        if (Directory.Exists(tilesFolder))
+        {
+            Directory.Delete(tilesFolder, true);
+        }
+
+        if (File.Exists(puzzle.ImagePath))
+        {
+            File.Delete(puzzle.ImagePath);
+        }
+
+        await LoadPuzzlesAsync();
+    }
+
 }

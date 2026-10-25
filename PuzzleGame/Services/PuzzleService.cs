@@ -1,4 +1,5 @@
-﻿using PuzzleGame.Data;
+﻿
+using PuzzleGame.Data;
 using PuzzleGame.Models;
 
 namespace PuzzleGame.Services;
@@ -20,5 +21,10 @@ public class PuzzleService
     public async Task SavePuzzleAsync(Puzzle puzzle)
     {
         await _database.SavePuzzleAsync(puzzle);
+    }
+
+    public async Task DeletePuzzleAsync(Puzzle puzzle)
+    {
+        await _database.DeletePuzzleAsync(puzzle);
     }
 }
