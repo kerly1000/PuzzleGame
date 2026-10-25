@@ -8,23 +8,16 @@ namespace PuzzleGame;
 public partial class MainPage : ContentPage
 {
     private readonly PuzzleService _puzzleService;
-    private readonly DefaultPuzzleService _defaultPuzzleService;
-
-    public MainPage(
-    PuzzleService puzzleService,
-    DefaultPuzzleService defaultPuzzleService)
+    
+    public MainPage(PuzzleService puzzleService)
     {
         InitializeComponent();
-
         _puzzleService = puzzleService;
-        _defaultPuzzleService = defaultPuzzleService;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-
-        await _defaultPuzzleService.AddDefaultPuzzlesAsync();
         await LoadPuzzlesAsync();
     }
 

@@ -28,8 +28,6 @@ namespace PuzzleGame
             //AddTransient lubab rakenduse avamisel lisada uue lehe pildi lisamiseks
             builder.Services.AddTransient<AddPuzzlePage>();
             
-            builder.Services.AddSingleton<PuzzleGame.Services.DefaultPuzzleService>();
-
             return builder.Build();
         }
     }
